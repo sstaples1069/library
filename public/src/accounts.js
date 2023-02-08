@@ -81,23 +81,23 @@ function getBooksPossessedByAccount(account = {}, books = [], authors = []) {
   //return an array of all book objs including author info currently checked out by account id
   //will have to find borrows similar to previous function
   const { id } = account;
-  let result = [];
-  books.forEach((bookObj) => {
+  const result = books.filter((bookObj) => {
     const { borrows, authorId } = bookObj;
-    borrows.forEach((borrower) => {
-      //have to match borrower id
-      if (borrower.id === id) {
-        //where borrows:returned === false, means that book is possessed
-        if (borrower.returned === false) {
-          const bookAuthor = authors.find((author) => {
-            return author.id === authorId;
-          });
-          bookObj.author = bookAuthor;
-          result.push(bookObj);
+    const doesAccountPossess = borrows.some((borrower) => {
+      //need to also check if returned
+      if (borrower.returned === false) {
+        return borrower.id === id;
         }
-      }
     });
+    if (doesAccountPossess === true) {
+        const matchingAuthor = authors.find((author) => {
+        return author.id === authorId
+      });
+      bookObj.author = matchingAuthor;
+      return bookObj;
+    }
   });
+  console.log(result);
   return result;
 }
 
