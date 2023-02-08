@@ -97,7 +97,7 @@ function getBooksPossessedByAccount(account = {}, books = [], authors = []) {
       return bookObj;
     }
   });
-  console.log(result);
+  //console.log(result);
   return result;
 }
 
